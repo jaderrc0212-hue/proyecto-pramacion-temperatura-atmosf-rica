@@ -20,3 +20,12 @@ Los datos fueron obtenidos del repositorio público de **bastianolea** (Temperat
 * **`src/`**: Módulos de código Python (`carga.py`, etc.)[cite: 12].
 * **`reportes/`**: Archivos y resultados generados por el análisis[cite: 12].
 * **`main.py`**: Script principal para ejecutar el programa[cite: 12].
+
+
+# Sistema de Análisis y Monitoreo de Temperatura Atmosférica en Chile (Avance 2)
+
+## Instrucciones de Ejecución
+Para ejecutar el pipeline completo de limpieza, transformación y validación de datos, ejecute el siguiente comando desde la raíz del proyecto:
+
+```bash
+python main.py
