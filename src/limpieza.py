@@ -1,16 +1,33 @@
 import pandas as pd
 
 def limpiar_datos(df):
-    """Limpia espacios, elimina duplicados y trata valores nulos."""
-    # 1. Eliminar duplicados
-    df = df.drop_duplicates()
+    """Limpia el dataset corrigiendo comas decimales y asegurando valores numéricos."""
+    print("\n--- INICIANDO LIMPIEZA DE DATOS ---")
     
-    # 2. Normalizar nombres de columnas
-    df.columns = df.columns.str.strip().str.lower()
+    df_limpio = df.copy()
     
-    # 3. Tratamiento seguro de nulos en t_min (convertir a numérico primero)
-    if 't_min' in df.columns:
-        df['t_min'] = pd.to_numeric(df['t_min'], errors='coerce')
-        df['t_min'] = df['t_min'].fillna(df['t_min'].mean())
-        
-    return df
+    # Normalizar nombres de columnas (quitar espacios y pasar a minúsculas)
+    df_limpio.columns = [str(c).strip().lower() for c in df_limpio.columns]
+    
+    # Reemplazar comas por puntos en todo el DataFrame si son strings, para no perder decimales
+    for col in df_limpio.columns:
+        if df_limpio[col].dtype == 'object':
+            try:
+                df_limpio[col] = df_limpio[col].astype(str).str.replace(',', '.', regex=False)
+            except Exception:
+                pass
+                
+    # Convertir columnas de temperatura y año a numérico de forma segura
+    for col in df_limpio.columns:
+        if any(k in col for k in ['max', 'min', 'med', 'año', 'anio', 'year', 'altura', 'lat', 'lon']):
+            df_limpio[col] = pd.to_numeric(df_limpio[col], errors='coerce')
+            
+    # Eliminar duplicados si los hay
+    df_limpio = df_limpio.drop_duplicates()
+    
+    print(f"Filas tras limpieza: {df_limpio.shape[0]}")
+    print("--- LIMPIEZA FINALIZADA ---")
+    return df_limpio
+
+if __name__ == "__main__":
+    pass

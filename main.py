@@ -4,26 +4,22 @@ from src.limpieza import limpiar_datos
 from src.transformaciones import aplicar_transformaciones
 from src.validaciones import validar_dataset
 
+# Nuevos imports para el Avance 3
+from src.estadisticas import calcular_estadisticas
+from src.indicadores import calcular_indicadores
+from src.visualizaciones import generar_graficos
+
 def main():
+    print("--- INICIANDO PIPELINE DE DATOS COMPLETO (AVANCES 2 y 3) ---")
+    
     # 1. Rutas de los archivos
     ruta_entrada = os.path.join("datos", "originales", "dataset.csv")
     ruta_salida = os.path.join("datos", "procesados", "dataset_limpio.csv")
     
-    print("--- INICIANDO PIPELINE DE DATOS (AVANCE 2) ---")
-    
     # 2. Carga
     datos = cargar_datos(ruta_entrada)
-    
     if datos is not None:
         print("Carga realizada correctamente.")
-        
-        # --- MÉTRICAS DEL "ANTES" (Para tu tabla del informe) ---
-        print("\n[ESTADÍSTICAS - ANTES DEL PROCESO]")
-        print(f"Filas: {datos.shape[0]}")
-        print(f"Columnas: {datos.shape[1]}")
-        print(f"Valores nulos: {datos.isnull().sum().sum()}")
-        print(f"Filas duplicadas: {datos.duplicated().sum()}")
-        print("-" * 40 + "\n")
         
         # 3. Limpieza
         datos_limpios = limpiar_datos(datos)
@@ -31,8 +27,22 @@ def main():
         # 4. Transformaciones
         datos_transformados = aplicar_transformaciones(datos_limpios)
         
-        # 5. Validación (imprime los datos del "Después" que ya tenías configurados)
-        validar_dataset(datos_transformados)
+        # 5. Validaciones y guardado del dataset limpio (Avance 2)
+        validar_dataset(datos_transformados, ruta_salida)
+        
+        print("\n--- INICIANDO MÓDULOS DE ANÁLISIS (AVANCE 3) ---")
+        
+        # 6. Calcular y exportar estadísticas
+        calcular_estadisticas(ruta_salida, "resultados/estadisticas.csv")
+        
+        # 7. Calcular y exportar indicadores
+        calcular_indicadores(ruta_salida, "resultados/indicadores.csv")
+        
+        # 8. Generar y guardar gráficos
+        generar_graficos(ruta_salida, "resultados/graficos/")
+        
+        print("\n=== ¡PROCESO COMPLETADO CON ÉXITO! ===")
+        print("Verifique los archivos en datos/procesados/, resultados/ y resultados/graficos/")
 
 if __name__ == "__main__":
     main()

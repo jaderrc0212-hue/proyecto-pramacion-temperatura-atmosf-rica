@@ -1,0 +1,5 @@
+Indicador,Método,Resultado,Interpretación
+Total de Registros Válidos,len(df),159073.0,Cantidad total de observaciones limpias disponibles para el análisis.
+Temperatura Máxima Promedio,"df[""t_max""].mean()",0.0,Indica la tendencia térmica superior global del periodo analizado.
+Temperatura Máxima Absoluta,"df[""t_max""].max()",,Identifica el registro extremo superior detectado en el territorio.
+Total de Años en el Dataset,"df[""anio""].nunique()",75.0,Representa la amplitud temporal histórica cubierta por el monitoreo.
